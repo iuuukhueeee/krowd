@@ -1,4 +1,4 @@
-import { ProjectStatus } from "@/types/enums/project-status";
+import { ApproveStatus } from "@/types/enums/project-status";
 
 export interface ProjectModel {
   projectId: number;
@@ -11,5 +11,5 @@ export interface ProjectModel {
   brand: string;
   startDate: Date;
   endDate: Date;
-  status: ProjectStatus;
+  status: ApproveStatus;
 }

@@ -1,4 +1,4 @@
-import { TableReviewsProps } from "@/pages/admin/projects";
+import { TableReviewsProps } from "@/pages/admin/projects-page";
 
 export const data: TableReviewsProps["data"] = [
   {

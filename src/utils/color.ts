@@ -1,7 +1,7 @@
-import { ProjectStatus } from "@/types/enums/project-status";
+import { ApproveStatus } from "@/types/enums/project-status";
 
-export const getStatusColor = (status: ProjectStatus) => {
-  if (status === ProjectStatus.PENDING) return "yellow";
-  if (status === ProjectStatus.APPROVED) return "green";
-  if (status === ProjectStatus.REJECTED) return "red";
+export const getStatusColor = (status: ApproveStatus) => {
+  if (status === ApproveStatus.PENDING) return "yellow";
+  if (status === ApproveStatus.APPROVED) return "green";
+  if (status === ApproveStatus.REJECTED) return "red";
 };

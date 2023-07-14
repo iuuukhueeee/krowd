@@ -19,9 +19,12 @@ import { useUserService } from "@/services";
 const mockdata = [
   { label: "Dashboard", icon: IconGauge },
   {
-    label: "Projects",
+    label: "Request",
     icon: IconNotes,
-    to: "/admin/projects",
+    links: [
+      { label: "Project", link: "/admin/project" },
+      { label: "Project owner", link: "/admin/po" },
+    ],
   },
   {
     label: "Market news",
