@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import Error404 from "@/pages/error-404";
+import { adminRoutes } from "@/router/routes/admin";
 import { publicRoutes } from "@/router/routes/public";
 import { AuthRouteObject } from "@/types/route";
 
@@ -22,6 +23,7 @@ export const resolvedRoutes = resolveAllRoutes(
   {
     children: publicRoutes,
   },
+  ...adminRoutes,
   // guestRoute,
   // allRoute,
   // userRoute,
