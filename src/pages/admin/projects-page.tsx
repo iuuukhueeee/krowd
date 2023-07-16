@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Avatar, Flex, Group, Paper, Stack, Table, Text } from "@mantine/core";
+import { Avatar, Flex, Paper, Stack, Table, Text } from "@mantine/core";
 
 import ProjectRow from "@/features/project/components/row";
 import { useAdminService } from "@/services";

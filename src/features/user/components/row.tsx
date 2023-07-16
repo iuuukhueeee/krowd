@@ -25,7 +25,7 @@ export default function UserRow({ data }: UserRowProps) {
   // const handleApprove = () => putApproveProject(project.projectId);
 
   return (
-    <tr>
+    <tr data-target={data.email}>
       <td>{data.userId}</td>
       <td>
         <UnstyledButton>
@@ -52,6 +52,7 @@ export default function UserRow({ data }: UserRowProps) {
         <HiddenField>{data.momo}</HiddenField>
       </td>
       <td>{dayjs(data.createdAt).format("DD MMM YYYY")}</td>
+      <td>{pascalCase(data.roleId)}</td>
       <td align="right">
         <Menu shadow="md" width={200} position="bottom-end">
           <Menu.Target>

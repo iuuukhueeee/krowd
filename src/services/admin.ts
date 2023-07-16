@@ -11,22 +11,29 @@ import { UserModel } from "@/types/models/user";
 interface State {
   projects: ProjectModel[];
   user: UserModel[];
+  postUser: UserModel[]; // post processing user list (after filtered)
+  filters: string[];
 }
 interface Action {
   getByStatus: (status?: string) => void;
   putApproveProject: (id: number) => void;
   putRejectProject: (id: number) => void;
   getAllUser: () => void;
+
+  setFilter: (string: []) => void;
 }
 
 const useAdmin = create(
   immer<State & Action>((set) => ({
     projects: [],
     user: [],
+    filters: [],
+    postUser: [],
     getAllUser: async () => {
       const response = await adminApi.getAllUser();
       set((state) => {
         state.user = response.data;
+        state.postUser = response.data;
       });
     },
     getByStatus: async (status?: string) => {
@@ -68,6 +75,33 @@ const useAdmin = create(
           });
         }
       }
+    },
+    setFilter: (filters: string[]) => {
+      // group search by role and status
+      const searchs = filters.reduce<{
+        role: string[];
+        status: string[];
+      }>(
+        (acc, cur) => {
+          const group = cur.split("/")[1] as "role" | "status";
+          return {
+            ...acc,
+            [group]: [...acc[group], cur.split("/")[0].toLowerCase()],
+          };
+        },
+        { role: [], status: [] },
+      );
+      set((state) => {
+        state.filters = filters;
+        state.postUser = state.user.filter((user) => {
+          const role = user.roleId.toLowerCase();
+          const status = user.status.toLowerCase();
+          const isRoleMatch = searchs.role.length === 0 ? true : searchs.role.includes(role);
+          const isStatusMatch =
+            searchs.status.length === 0 ? true : searchs.status.includes(status);
+          if (isRoleMatch && isStatusMatch) return user;
+        });
+      });
     },
   })),
 );

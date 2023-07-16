@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { BASE_API_URL } from "@/configs/env";
 import { onRequest, onRequestError } from "@/configs/interceptors";
-import getIdToken from "@/utils/getIdToken";
+import getIdToken from "@/utils/ge-id-ioken";
 
 const axiosInstance = axios.create({
   baseURL: BASE_API_URL,
