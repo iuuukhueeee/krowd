@@ -10,10 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.11.2",
+    "@cloudinary/url-gen": "^1.10.2",
     "@dicebear/collection": "^6.0.4",
     "@dicebear/core": "^6.0.4",
     "@emotion/react": "^11.11.1",
     "@mantine/core": "^6.0.16",
+    "@mantine/dropzone": "^6.0.16",
     "@mantine/form": "^6.0.16",
     "@mantine/hooks": "^6.0.16",
     "@mantine/notifications": "^6.0.16",

@@ -55,10 +55,10 @@ export default function POPage() {
           <tr>
             <th>ID</th>
             <th>Username</th>
-            <th>Role</th>
             <th>ID Card</th>
             <th>Bank</th>
             <th>Momo</th>
+            <th>Created</th>
             <th>Role</th>
             <th style={{ textAlign: "right" }}>Status/Action</th>
           </tr>

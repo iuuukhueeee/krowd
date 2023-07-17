@@ -1,7 +1,11 @@
 import { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
 export const onRequest = (config: InternalAxiosRequestConfig) => {
-  // Do something before sending the request
+  const token = localStorage.getItem("id-token");
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
   return config;
 };
 

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { notifications } from "@mantine/notifications";
 import { FirebaseError } from "firebase/app";
 import { UserCredential } from "firebase/auth";
@@ -11,13 +11,14 @@ export default function useGoogleLogin() {
   const [error, setError] = useState<unknown | FirebaseError>(undefined);
   const [loading, setLoading] = useState(false);
 
-  const signIn = useCallback(async () => {
+  const signIn = async () => {
     setLoading(true);
     try {
       const response = await signInWithGoogle();
       setCredential(response);
       const idToken = await response.user.getIdToken();
       setIdToken(idToken); // save the idToken into the local storage
+      return response;
     } catch (e) {
       if (e instanceof FirebaseError) {
         setError(e);
@@ -27,10 +28,11 @@ export default function useGoogleLogin() {
           color: "red",
         });
       }
+      setCredential(null);
     } finally {
       setLoading(false);
     }
-  }, []);
+  };
 
   return { credential, error, signIn, loading };
 }

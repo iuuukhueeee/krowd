@@ -1,6 +1,7 @@
 import { Navigate } from "react-router-dom";
 
 import Login from "@/pages/login";
+import SignUp from "@/pages/po/sign-up";
 import { AuthRouteObject } from "@/types/route";
 
 export const publicRoutes: AuthRouteObject[] = [
@@ -11,5 +12,9 @@ export const publicRoutes: AuthRouteObject[] = [
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/sign-up",
+    element: <SignUp />,
   },
 ];
