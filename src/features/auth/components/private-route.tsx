@@ -11,6 +11,7 @@ interface PrivateRouteProps {
 }
 
 export default function PrivateRoute({ requiredRole }: PrivateRouteProps) {
+  const idToken = localStorage.getItem("id-token");
   const { user, getUser } = useUserService();
   const [loading, setLoading] = useState(false);
 
