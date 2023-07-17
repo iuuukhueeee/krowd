@@ -18,7 +18,7 @@ export const resolveAllRoutes = (...routes: AuthRouteObject[]): AuthRouteObject[
 export const resolvedRoutes = resolveAllRoutes(
   {
     path: "/",
-    element: <Navigate to="home" />,
+    element: <Navigate to="/login" />,
   },
   {
     children: publicRoutes,

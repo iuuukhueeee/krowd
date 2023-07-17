@@ -1,14 +1,13 @@
 import { useMemo } from "react";
-import { botttsNeutral } from "@dicebear/collection";
-import { createAvatar } from "@dicebear/core";
 import { Anchor, Avatar, Box, Group, Menu, Text, UnstyledButton } from "@mantine/core";
 import { IconBan, IconCheck } from "@tabler/icons-react";
 import { pascalCase } from "change-case";
 import dayjs from "dayjs";
 
-import { useAdminService } from "@/services";
+import { useQueryAdminProject } from "@/services/use-query-admin";
 import { ProjectModel } from "@/types/models/project";
 import { getStatusColor } from "@/utils/color";
+import generateAvatar from "@/utils/generate-avatar";
 import { isValidUrl } from "@/utils/validation";
 
 interface ProjectRowProps {
@@ -16,16 +15,12 @@ interface ProjectRowProps {
 }
 
 export default function ProjectRow({ project }: ProjectRowProps) {
-  const { putApproveProject, putRejectProject } = useAdminService();
+  const { approve, reject } = useQueryAdminProject();
 
-  const avatar = useMemo(() => {
-    return createAvatar(botttsNeutral, {
-      seed: project.projectId.toString(),
-    }).toDataUriSync();
-  }, [project]);
+  const avatar = useMemo(() => generateAvatar(project.projectId.toString()), [project]);
 
-  const handleApprove = () => putApproveProject(project.projectId);
-  const handleReject = () => putRejectProject(project.projectId);
+  const handleApprove = () => approve(project.projectId);
+  const handleReject = () => reject(project.projectId);
 
   return (
     <tr key={project.projectId}>

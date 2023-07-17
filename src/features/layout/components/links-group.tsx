@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -52,7 +52,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface LinksGroupProps {
-  icon: React.FC<any>;
+  icon: React.ElementType;
   label: string;
   to?: string;
   initiallyOpened?: boolean;
@@ -66,17 +66,23 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links, to }: Li
   const navigate = useNavigate();
 
   const ChevronIcon = theme.dir === "ltr" ? IconChevronRight : IconChevronLeft;
-  const items = (hasLinks ? links : []).map((link) => (
-    <Text<"a">
-      component="a"
-      className={classes.link}
-      href={link.link}
-      key={link.label}
-      onClick={(event) => event.preventDefault()}
-    >
-      {link.label}
-    </Text>
-  ));
+  const items = (hasLinks ? links : []).map((link) => {
+    const handleRedirect = (e: MouseEvent) => {
+      e.preventDefault();
+      navigate(link.link);
+    };
+    return (
+      <Text<"a">
+        component="a"
+        className={classes.link}
+        href={link.link}
+        key={link.label}
+        onClick={handleRedirect}
+      >
+        {link.label}
+      </Text>
+    );
+  });
 
   const toggle = () => {
     if (links) {

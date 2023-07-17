@@ -1,48 +1,21 @@
-import { useEffect } from "react";
-import { Avatar, Flex, Paper, Stack, Table, Text } from "@mantine/core";
+import { Flex, Stack, Table } from "@mantine/core";
+import { IconClockHour2 } from "@tabler/icons-react";
 
 import ProjectRow from "@/features/project/components/row";
-import { useAdminService } from "@/services";
+import RankCard from "@/features/statistic/components/rank-card";
+import { useQueryAdminAllProject } from "@/services/use-query-admin";
 
 export default function ProjectsPage() {
-  const { projects, getByStatus } = useAdminService();
+  const { data } = useQueryAdminAllProject();
 
-  useEffect(() => {
-    getByStatus();
-  }, []);
-
-  const rows = projects.map((row) => <ProjectRow project={row} key={row.projectId} />);
+  const rows = data?.data.map((row) => <ProjectRow project={row} key={row.projectId} />);
 
   return (
     <Stack>
       <Flex gap="lg">
-        <Paper shadow="md" p="lg" w="100%">
-          <Flex align="center">
-            <Avatar size={40} color="blue">
-              BH
-            </Avatar>
-            <div>
-              <Text>Bob Handsome</Text>
-              <Text size="xs" color="dimmed">
-                bob@handsome.inc
-              </Text>
-            </div>
-          </Flex>
-        </Paper>
-        <Paper shadow="md" p="lg">
-          <Text>Paper is the most basic ui component</Text>
-          <Text>
-            Use it to create cards, dropdowns, modals and other components that require background
-            with shadow
-          </Text>
-        </Paper>
-        <Paper shadow="md" p="lg">
-          <Text>Paper is the most basic ui component</Text>
-          <Text>
-            Use it to create cards, dropdowns, modals and other components that require background
-            with shadow
-          </Text>
-        </Paper>
+        <RankCard avatar={{ children: <IconClockHour2 /> }} />
+        <RankCard />
+        <RankCard />
       </Flex>
       <Table sx={{ minWidth: 800 }} verticalSpacing="xl">
         <thead>

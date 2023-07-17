@@ -2,15 +2,7 @@ import { useEffect, useMemo } from "react";
 import { botttsNeutral } from "@dicebear/collection";
 import { createAvatar } from "@dicebear/core";
 import { Code, createStyles, Group, Navbar, rem, ScrollArea } from "@mantine/core";
-import {
-  IconAdjustments,
-  IconCalendarStats,
-  IconFileAnalytics,
-  IconGauge,
-  IconLock,
-  IconNotes,
-  IconPresentationAnalytics,
-} from "@tabler/icons-react";
+import { IconGauge, IconNotes } from "@tabler/icons-react";
 
 import { LinksGroup } from "@/features/layout/components/links-group";
 import { UserButton } from "@/features/layout/components/user-button";
@@ -19,43 +11,11 @@ import { useUserService } from "@/services";
 const mockdata = [
   { label: "Dashboard", icon: IconGauge },
   {
-    label: "Request",
+    label: "Management",
     icon: IconNotes,
     links: [
-      { label: "Project", link: "/admin/project" },
-      { label: "Project owner", link: "/admin/po" },
-    ],
-  },
-  {
-    label: "Market news",
-    icon: IconNotes,
-    initiallyOpened: true,
-    links: [
-      { label: "Overview", link: "/" },
-      { label: "Forecasts", link: "/" },
-      { label: "Outlook", link: "/" },
-      { label: "Real time", link: "/" },
-    ],
-  },
-  {
-    label: "Releases",
-    icon: IconCalendarStats,
-    links: [
-      { label: "Upcoming releases", link: "/" },
-      { label: "Previous releases", link: "/" },
-      { label: "Releases schedule", link: "/" },
-    ],
-  },
-  { label: "Analytics", icon: IconPresentationAnalytics },
-  { label: "Contracts", icon: IconFileAnalytics },
-  { label: "Settings", icon: IconAdjustments },
-  {
-    label: "Security",
-    icon: IconLock,
-    links: [
-      { label: "Enable 2FA", link: "/" },
-      { label: "Change password", link: "/" },
-      { label: "Recovery codes", link: "/" },
+      { label: "Projects", link: "/admin/projects" },
+      { label: "Project owners", link: "/admin/po" },
     ],
   },
 ];
@@ -103,7 +63,7 @@ export function NavbarNested() {
 
   useEffect(() => {
     getUser(); // notice
-  }, []);
+  }, [getUser]);
 
   const avatar = useMemo(() => {
     const avatar = createAvatar(botttsNeutral, {

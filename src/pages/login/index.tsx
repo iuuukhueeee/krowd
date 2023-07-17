@@ -4,34 +4,27 @@ import { Center } from "@mantine/core";
 
 import { GoogleButton } from "@/features/auth/components/google-button";
 import useGoogleLogin from "@/features/auth/hooks/use-google-login";
-import useAsyncEffect from "@/hooks/useAsyncEffect";
-import { useAuthenticationService, useUserService } from "@/services";
+import { useQueryUser } from "@/services/use-query-user";
 import { Role } from "@/types/enums/role";
-import setIdToken from "@/utils/set-id-token";
 
 export default function Login() {
   const { signIn, loading, credential } = useGoogleLogin();
-  const { getAuthentication } = useAuthenticationService();
-  const { getUser, user } = useUserService();
+  const { isFetching, data, refetch } = useQueryUser();
   const navigate = useNavigate();
 
-  useAsyncEffect(async () => {
-    if (!credential) return;
-
-    const idToken = await credential.user.getIdToken();
-    setIdToken(idToken);
-
-    await getAuthentication();
-    await getUser();
-  }, [credential]);
-
   useEffect(() => {
-    if (user?.roleId === Role.ADMIN) navigate("/admin/po");
-  }, [navigate, user]);
+    const user = data?.data;
+    if (user?.roleId === Role.ADMIN) return navigate("/admin/po");
+  }, [data?.data, navigate]);
+
+  const handleLogin = async () => {
+    if (!credential) return await signIn();
+    refetch();
+  };
 
   return (
     <Center w="100vw" h="100vh">
-      <GoogleButton loading={loading} onClick={signIn}>
+      <GoogleButton loading={loading || isFetching} onClick={handleLogin}>
         Sign in with Google
       </GoogleButton>
     </Center>
