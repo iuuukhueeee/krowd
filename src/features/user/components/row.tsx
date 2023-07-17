@@ -1,14 +1,14 @@
 import { useMemo } from "react";
-import { botttsNeutral } from "@dicebear/collection";
-import { createAvatar } from "@dicebear/core";
 import { Anchor, Avatar, Box, Group, Menu, Text, UnstyledButton } from "@mantine/core";
 import { IconBan, IconCheck } from "@tabler/icons-react";
 import { pascalCase } from "change-case";
 import dayjs from "dayjs";
 
 import HiddenField from "@/components/hidden-field";
+import usePO from "@/services/admin/use-po";
 import { UserModel } from "@/types/models/user";
 import { getStatusColor } from "@/utils/color";
+import generateAvatar from "@/utils/generate-avatar";
 import { isValidUrl } from "@/utils/validation";
 
 interface UserRowProps {
@@ -16,13 +16,12 @@ interface UserRowProps {
 }
 
 export default function UserRow({ data }: UserRowProps) {
-  const avatar = useMemo(() => {
-    return createAvatar(botttsNeutral, {
-      seed: data.email,
-    }).toDataUriSync();
-  }, [data]);
+  const { approvePO, rejectPO } = usePO();
 
-  // const handleApprove = () => putApproveProject(project.projectId);
+  const avatar = useMemo(() => generateAvatar(data.email), [data]);
+
+  const handleApprove = () => approvePO(data.userId);
+  const handleReject = () => rejectPO(data.userId);
 
   return (
     <tr data-target={data.email}>
@@ -60,14 +59,16 @@ export default function UserRow({ data }: UserRowProps) {
           </Menu.Target>
 
           <Menu.Dropdown>
-            <Box>
+            <Box onClick={handleApprove}>
               <Menu.Item color="green" icon={<IconCheck size={14} />}>
                 Approve
               </Menu.Item>
             </Box>
-            <Menu.Item color="red" icon={<IconBan size={14} />}>
-              Reject
-            </Menu.Item>
+            <Box onClick={handleReject}>
+              <Menu.Item color="red" icon={<IconBan size={14} />}>
+                Reject
+              </Menu.Item>
+            </Box>
           </Menu.Dropdown>
         </Menu>
       </td>

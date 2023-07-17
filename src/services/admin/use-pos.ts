@@ -1,12 +1,12 @@
 import { useMemo, useState } from "react";
 import { botttsNeutral } from "@dicebear/collection";
 import { createAvatar } from "@dicebear/core";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import { adminApi } from "@/api";
 import { isValidUrl } from "@/utils/validation";
 
-export const useQueryAdminAllUser = () => {
+export default function usePOs() {
   const query = useQuery({ queryKey: ["admin", "user"], queryFn: adminApi.getAllUser });
   const [filter, setFilter] = useState<string[]>([]);
 
@@ -37,7 +37,6 @@ export const useQueryAdminAllUser = () => {
    */
   const users = useMemo(() => {
     if (!Array.isArray(query.data?.data)) return [];
-    console.log("dataaaaaaaaaaaaaaaaa", query.data?.data);
     return (
       query.data?.data.filter((user) => {
         const role = user.roleId.toLowerCase();
@@ -70,52 +69,4 @@ export const useQueryAdminAllUser = () => {
   }, [query.data?.data]);
 
   return { ...query, searchList, setFilter, filter, users };
-};
-
-export const useQueryAdminProject = () => {
-  const queryClient = useQueryClient();
-
-  const approveProject = useMutation({
-    mutationFn: adminApi.putApproveProject,
-    onSuccess: () => {
-      // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ["admin", "project"] });
-    },
-  });
-
-  const rejectProject = useMutation({
-    mutationFn: adminApi.putApproveProject,
-    onSuccess: () => {
-      // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ["admin", "project"] });
-    },
-  });
-
-  const approve = (id: number) => approveProject.mutate(id);
-  const reject = (id: number) => rejectProject.mutate(id);
-
-  return { approve, reject };
-};
-
-export const useQueryAdminAllProject = () => {
-  const query = useQuery({
-    queryKey: ["admin", "project"],
-    queryFn: () => adminApi.getProjectByStatus(),
-  });
-  // const [filter, setFilter] = useState<string[]>([]);
-
-  // const projects = useMemo(() => {
-  //   if (!Array.isArray(query.data?.data)) return [];
-  //   return (
-  //     query.data?.data.filter((project) => {
-  //       const area = project.areaName.toLowerCase();
-  //       const field = project.fieldName.toLowerCase()
-  //       const isAreaMatch = searchs.role.length === 0 ? true : searchs.role.includes(role);
-  //       const isFieldMatch = searchs.status.length === 0 ? true : searchs.status.includes(status);
-  //       if (isRoleMatch && isStatusMatch) return user;
-  //     }) || []
-  //   );
-  // }, [query.data?.data, searchs.role, searchs.status]);
-
-  return { ...query };
-};
+}

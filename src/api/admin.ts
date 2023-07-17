@@ -41,6 +41,31 @@ const admin = {
     const response = await axiosInstance.get<UserModel[]>(`${ENDPOINT}/all-user`);
     return response;
   },
+
+  async putRejectPO(poId: number) {
+    const response = await axiosInstance.put(
+      `${ENDPOINT}/rejectPO`,
+      {},
+      {
+        params: {
+          poId: poId,
+        },
+      },
+    );
+    return response;
+  },
+  async putApprovePO(poId: number) {
+    const response = await axiosInstance.put(
+      `${ENDPOINT}/approvePO`,
+      {},
+      {
+        params: {
+          poId: poId,
+        },
+      },
+    );
+    return response;
+  },
 };
 
 export default admin;

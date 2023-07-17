@@ -3,10 +3,10 @@ import { IconClockHour2 } from "@tabler/icons-react";
 
 import ProjectRow from "@/features/project/components/row";
 import RankCard from "@/features/statistic/components/rank-card";
-import { useQueryAdminAllProject } from "@/services/use-query-admin";
+import useProjects from "@/services/admin/use-projects";
 
 export default function ProjectsPage() {
-  const { data } = useQueryAdminAllProject();
+  const { data } = useProjects();
 
   const rows = data?.data.map((row) => <ProjectRow project={row} key={row.projectId} />);
 

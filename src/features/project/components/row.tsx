@@ -4,7 +4,7 @@ import { IconBan, IconCheck } from "@tabler/icons-react";
 import { pascalCase } from "change-case";
 import dayjs from "dayjs";
 
-import { useQueryAdminProject } from "@/services/use-query-admin";
+import useProject from "@/services/admin/use-project";
 import { ProjectModel } from "@/types/models/project";
 import { getStatusColor } from "@/utils/color";
 import generateAvatar from "@/utils/generate-avatar";
@@ -15,12 +15,12 @@ interface ProjectRowProps {
 }
 
 export default function ProjectRow({ project }: ProjectRowProps) {
-  const { approve, reject } = useQueryAdminProject();
+  const { approveProject, rejectProject } = useProject();
 
   const avatar = useMemo(() => generateAvatar(project.projectId.toString()), [project]);
 
-  const handleApprove = () => approve(project.projectId);
-  const handleReject = () => reject(project.projectId);
+  const handleApprove = () => approveProject(project.projectId);
+  const handleReject = () => rejectProject(project.projectId);
 
   return (
     <tr key={project.projectId}>

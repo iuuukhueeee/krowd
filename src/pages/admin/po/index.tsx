@@ -5,10 +5,10 @@ import CustomSearchBox from "@/components/custom-search-box";
 import RankCard from "@/features/statistic/components/rank-card";
 import UserRow from "@/features/user/components/row";
 import { breadCrums, FILTER_OPTIONS, skeleton } from "@/pages/admin/po/config";
-import { useQueryAdminAllUser } from "@/services/use-query-admin";
+import usePOs from "@/services/admin/use-pos";
 
 export default function POPage() {
-  const { searchList, users, setFilter, isLoading } = useQueryAdminAllUser();
+  const { searchList, users, setFilter, isLoading } = usePOs();
 
   const rows = users.map((row) => <UserRow data={row} key={row.userId} />);
 
