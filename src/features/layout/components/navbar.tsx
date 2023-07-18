@@ -2,23 +2,11 @@ import { useEffect, useMemo } from "react";
 import { botttsNeutral } from "@dicebear/collection";
 import { createAvatar } from "@dicebear/core";
 import { Code, createStyles, Group, Navbar, rem, ScrollArea } from "@mantine/core";
-import { IconGauge, IconNotes } from "@tabler/icons-react";
+import { TablerIconsProps } from "@tabler/icons-react";
 
 import { LinksGroup } from "@/features/layout/components/links-group";
 import { UserButton } from "@/features/layout/components/user-button";
 import { useUserService } from "@/services";
-
-const mockdata = [
-  { label: "Dashboard", icon: IconGauge },
-  {
-    label: "Management",
-    icon: IconNotes,
-    links: [
-      { label: "Projects", link: "/admin/projects" },
-      { label: "Project owners", link: "/admin/po" },
-    ],
-  },
-];
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -56,9 +44,20 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function NavbarNested() {
+interface Item {
+  label: string;
+  icon?: (props: TablerIconsProps) => JSX.Element;
+  link?: string;
+  links?: Item[];
+}
+
+interface NavbarNestedProps {
+  data: Item[];
+}
+
+export function NavbarNested({ data }: NavbarNestedProps) {
   const { classes } = useStyles();
-  const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />);
+  const links = data.map((item) => <LinksGroup {...item} key={item.label} />);
   const { user, getUser } = useUserService();
 
   useEffect(() => {
@@ -71,8 +70,6 @@ export function NavbarNested() {
     });
     return avatar.toDataUriSync();
   }, [user]);
-
-  console.log(user);
 
   return (
     <Navbar height="100%" width={{ sm: 300 }} p="md" className={classes.navbar}>
@@ -88,7 +85,7 @@ export function NavbarNested() {
       </Navbar.Section>
 
       <Navbar.Section className={classes.footer}>
-        <UserButton image={avatar} name={user?.full_name} email={user?.email} />
+        <UserButton image={user?.avatar || avatar} name={user?.full_name} email={user?.email} />
       </Navbar.Section>
     </Navbar>
   );

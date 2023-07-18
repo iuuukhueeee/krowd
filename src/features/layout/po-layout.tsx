@@ -7,16 +7,16 @@ import { NavbarNested } from "@/features/layout/components/navbar";
 const mockdata = [
   { label: "Dashboard", icon: IconGauge },
   {
-    label: "Management",
+    label: "My project",
     icon: IconNotes,
     links: [
-      { label: "Projects", link: "/admin/projects" },
-      { label: "Project owners", link: "/admin/po" },
+      { label: "New project", link: "/po/create" },
+      { label: "Projects", link: "/po/projects" },
     ],
   },
 ];
 
-export default function AdminLayout({ children }: PropsWithChildren) {
+export default function POLayout({ children }: PropsWithChildren) {
   return (
     <AppShell
       padding="md"

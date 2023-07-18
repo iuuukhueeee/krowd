@@ -9,6 +9,8 @@ import useAsyncEffect from "@/hooks/useAsyncEffect";
 import { uploadImage } from "@/utils/cloudinary";
 
 interface ImageDropProps<T> {
+  children?: React.ReactNode;
+  noPreview?: boolean;
   form: UseFormReturnType<
     T & {
       avatar: string;
@@ -16,7 +18,7 @@ interface ImageDropProps<T> {
   >;
 }
 
-export default function ImageDrop<T>({ form }: ImageDropProps<T>) {
+export default function ImageDrop<T>({ form, children, noPreview }: ImageDropProps<T>) {
   const [files, setFiles] = useState<FileWithPath[]>([]);
   const [img, setImg] = useState(form.values.avatar);
 
@@ -26,7 +28,7 @@ export default function ImageDrop<T>({ form }: ImageDropProps<T>) {
       notifications.show({
         id: "uploading",
         loading: true,
-        message: "Processing your avatar",
+        message: "Processing your image",
         autoClose: false,
         withCloseButton: false,
       });
@@ -36,7 +38,7 @@ export default function ImageDrop<T>({ form }: ImageDropProps<T>) {
     } finally {
       notifications.update({
         id: "uploading",
-        message: "Your avatar uploaded",
+        message: "Your image uploaded",
         color: "green",
         icon: <IconCheck size="1rem" />,
       });
@@ -55,12 +57,14 @@ export default function ImageDrop<T>({ form }: ImageDropProps<T>) {
           multiple={false}
         >
           <Center w="100%" h="100%">
-            Drop your avatar here
+            {children || "Drop your avatar here"}
           </Center>
         </Dropzone>
-        <Avatar size={80} src={img}>
-          IM
-        </Avatar>
+        {noPreview === true ? null : (
+          <Avatar size={80} src={img}>
+            IM
+          </Avatar>
+        )}
       </Flex>
     </div>
   );

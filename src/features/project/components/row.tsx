@@ -8,6 +8,7 @@ import useProject from "@/services/admin/use-project";
 import { ProjectModel } from "@/types/models/project";
 import { getStatusColor } from "@/utils/color";
 import generateAvatar from "@/utils/generate-avatar";
+import createPopup from "@/utils/reate-popup";
 import { isValidUrl } from "@/utils/validation";
 
 interface ProjectRowProps {
@@ -21,6 +22,9 @@ export default function ProjectRow({ project }: ProjectRowProps) {
 
   const handleApprove = () => approveProject(project.projectId);
   const handleReject = () => rejectProject(project.projectId);
+
+  const handleOpenDesciption = () =>
+    createPopup(`/project/${project.projectId}`, project.projectName, 1440, 720);
 
   return (
     <tr key={project.projectId}>
@@ -43,7 +47,7 @@ export default function ProjectRow({ project }: ProjectRowProps) {
       <td>{project.areaName}</td>
       <td>{project.fieldName}</td>
       <td>
-        <Anchor>Description</Anchor>
+        <Anchor onClick={handleOpenDesciption}>Description</Anchor>
       </td>
       <td>{dayjs(project.createAt).format("DD MMM YYYY")}</td>
       <td align="right">

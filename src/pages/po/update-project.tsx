@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { Button, Flex, Grid, Image, NumberInput, Paper, Stack, Text, Title } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
@@ -18,15 +21,15 @@ import ImageDrop from "@/components/image-drop";
 import RichText from "@/components/rich-text";
 import useQueryArea from "@/services/area";
 import useQueryField from "@/services/field";
-import useProject from "@/services/po/use-project";
+import { useUpdateProject } from "@/services/po/use-project";
+import useProject from "@/services/use-project";
 
-const content =
-  '<h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p><code>RichTextEditor</code> component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. <code>RichTextEditor</code> is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul>';
-
-export default function CreateProject() {
+export default function UpdateProject() {
+  const { id } = useParams();
   const { selectList: areas } = useQueryArea();
   const { selectList: fields } = useQueryField();
-  const { mutate, isLoading } = useProject();
+  const { mutate, isLoading } = useUpdateProject(id ? parseInt(id) : -1);
+  const { data } = useProject(parseInt(id || "-1"));
 
   const editor = useEditor({
     extensions: [
@@ -38,16 +41,21 @@ export default function CreateProject() {
       Highlight,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
-    content,
+    content: "",
   });
+
+  useEffect(() => {
+    const content = data?.data.description || "";
+    editor?.commands.setContent(content);
+  }, [data?.data.description]);
 
   const form = useForm({
     initialValues: {
-      dateRange: [null, null],
+      dateRange: [new Date(), new Date()],
       avatar: "",
       businessLicense: "",
-      fieldId: fields[0]?.value,
-      areaId: areas[0]?.value,
+      fieldId: 0,
+      areaId: 0,
       projectName: "",
       brand: "",
       investmentTargetCapital: 0,
@@ -57,10 +65,28 @@ export default function CreateProject() {
     },
   });
 
+  useEffect(() => {
+    const project = data?.data;
+    if (project)
+      form.setValues({
+        dateRange: [new Date(project.startDate), new Date(project.endDate)],
+        avatar: project.image,
+        businessLicense: project.businessLicense || "",
+        fieldId: project.fieldId,
+        areaId: project.areaId,
+        projectName: project.projectName,
+        brand: project.brand,
+        investmentTargetCapital: project.targetCapital,
+        sharedRevenue: project.sharedRevenue,
+        multiplier: project.multiplier,
+        duration: project.duration,
+      });
+  }, [data?.data]);
+
   const handleSubmit = () =>
     mutate({
-      fieldId: parseInt(form.values.fieldId),
-      areaId: parseInt(form.values.areaId),
+      fieldId: form.values.fieldId,
+      areaId: form.values.areaId,
       projectName: form.values.projectName,
       brand: form.values.brand,
       investmentTargetCapital: form.values.investmentTargetCapital,
@@ -198,7 +224,7 @@ export default function CreateProject() {
                 </Grid.Col>
               </Grid>
               <Button type="submit" w="100%" loading={isLoading}>
-                Create new project
+                Update project
               </Button>
             </Stack>
           </Paper>

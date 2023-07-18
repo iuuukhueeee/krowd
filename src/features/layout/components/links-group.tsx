@@ -52,11 +52,11 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface LinksGroupProps {
-  icon: React.ElementType;
+  icon?: React.ElementType;
   label: string;
   to?: string;
   initiallyOpened?: boolean;
-  links?: { label: string; link: string }[];
+  links?: { label: string; link?: string }[];
 }
 
 export function LinksGroup({ icon: Icon, label, initiallyOpened, links, to }: LinksGroupProps) {
@@ -69,7 +69,7 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links, to }: Li
   const items = (hasLinks ? links : []).map((link) => {
     const handleRedirect = (e: MouseEvent) => {
       e.preventDefault();
-      navigate(link.link);
+      if (link.link) navigate(link.link);
     };
     return (
       <Text<"a">
@@ -98,7 +98,7 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links, to }: Li
         <Group position="apart" spacing={0}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <ThemeIcon variant="light" size={30}>
-              <Icon size="1.1rem" />
+              {Icon && <Icon size="1.1rem" />}
             </ThemeIcon>
             <Box ml="md">{label}</Box>
           </Box>

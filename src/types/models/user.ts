@@ -1,8 +1,9 @@
 import { ApproveStatus } from "@/types/enums/project-status";
+import { Role } from "@/types/enums/role";
 
 export interface UserModel {
   userId: number;
-  roleId: string;
+  roleId: Role;
   full_name: string;
   email: string;
   phone: string;

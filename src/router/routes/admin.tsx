@@ -8,7 +8,7 @@ import { AuthRouteObject } from "@/types/route";
 export const adminRoutes: AuthRouteObject[] = [
   {
     path: "/admin",
-    element: <PrivateRoute requiredRole={Role.ADMIN} />,
+    element: <PrivateRoute requiredRole={[Role.ADMIN]} />,
     children: [
       {
         path: "/admin/projects",

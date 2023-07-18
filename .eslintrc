@@ -42,6 +42,7 @@
     ],
     "rules": {
         "import/no-unresolved": "error",
+        "import/no-named-as-default": "off",
         "prettier/prettier": "error",
         "react/react-in-jsx-scope": "off",
         "react/display-name": "off",

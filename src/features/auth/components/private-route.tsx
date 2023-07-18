@@ -5,7 +5,7 @@ import { useQueryUser } from "@/services/use-query-user";
 import { Role } from "@/types/enums/role";
 
 interface PrivateRouteProps {
-  requiredRole: Role;
+  requiredRole: Role[];
 }
 
 export default function PrivateRoute({ requiredRole }: PrivateRouteProps) {
@@ -17,7 +17,7 @@ export default function PrivateRoute({ requiredRole }: PrivateRouteProps) {
     return null;
   }
 
-  if (user?.roleId === requiredRole) {
+  if (user?.roleId && requiredRole.includes(user?.roleId)) {
     return <Outlet />;
   }
 

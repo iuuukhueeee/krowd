@@ -9,7 +9,19 @@ export interface ProjectModel {
   image: string;
   createAt: Date;
   brand: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   status: ApproveStatus;
+  fieldId: number;
+  areaId: number;
+  investmentTargetCapital: number;
+  targetCapital: number;
+  sharedRevenue: number;
+  multiplier: number;
+  duration: number;
+  projectDescription: string;
+  businessLicense: string;
+  paidAmount: number;
+  remainingAmount: number;
+  investedCapital: number;
 }
