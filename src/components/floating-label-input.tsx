@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { createStyles, rem, TextInput, TextInputProps } from "@mantine/core";
+import { FocusEvent, useState } from "react";
+import { IMaskInput } from "react-imask";
+import { createStyles, InputBase, rem, TextInputProps, Tooltip } from "@mantine/core";
 import { useUncontrolled } from "@mantine/hooks";
 
 const useStyles = createStyles((theme, { floating }: { floating: boolean }) => ({
@@ -21,9 +22,11 @@ const useStyles = createStyles((theme, { floating }: { floating: boolean }) => (
       ? theme.colors.dark[3]
       : theme.colors.gray[5],
     transition: "transform 150ms ease, color 150ms ease, font-size 150ms ease",
-    transform: floating ? `translate(-${theme.spacing.sm}, ${rem(-28)})` : "none",
+    transform: floating ? `translate(-4px, ${rem(-16)})` : "none",
     fontSize: floating ? theme.fontSizes.xs : theme.fontSizes.sm,
     fontWeight: floating ? 500 : 400,
+    background: "#fff",
+    padding: floating ? "0 4px" : "unset",
   },
 
   required: {
@@ -43,12 +46,17 @@ interface FloatingLabelInputProps {
   value?: string;
   onChange?(value: string): void;
   defaultValue?: string;
+  mask?: string;
 }
 
 export default function FloatingLabelInput({
   onChange,
   value,
   defaultValue,
+  onFocus,
+  onBlur,
+  error,
+  mask,
   ...others
 }: FloatingLabelInputProps & TextInputProps) {
   const [focused, setFocused] = useState(false);
@@ -66,19 +74,33 @@ export default function FloatingLabelInput({
     handleChange(e.currentTarget.value);
   };
 
+  const handleFocus = (e: FocusEvent<HTMLInputElement, Element>) => {
+    setFocused(true);
+    onFocus?.(e);
+  };
+
+  const handleBlur = (e: FocusEvent<HTMLInputElement, Element>) => {
+    if (!error) setFocused(false);
+    onBlur?.(e);
+  };
+
   return (
-    <TextInput
-      label="Floating label"
-      placeholder="OMG, it also has a placeholder"
-      required
-      classNames={classes}
-      value={value}
-      onChange={changeEvent}
-      onFocus={() => setFocused(true)}
-      onBlur={() => setFocused(false)}
-      mt="md"
-      autoComplete="nope"
-      {...others}
-    />
+    <Tooltip color="red" position="bottom" label={error} disabled={!error}>
+      <InputBase
+        component={IMaskInput}
+        label="Floating label"
+        placeholder="OMG, it also has a placeholder"
+        required
+        classNames={classes}
+        value={value}
+        onChange={changeEvent}
+        mt="md"
+        mask={mask}
+        {...others}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        error={Boolean(error)}
+      />
+    </Tooltip>
   );
 }

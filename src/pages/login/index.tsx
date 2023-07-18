@@ -17,9 +17,12 @@ export default function Login() {
     const user = data?.data;
 
     if (user?.roleId === Role.ADMIN) return navigate("/admin/po");
+    if (user?.roleId === Role.PO) return navigate("/po/projects");
 
     if (!isAxiosError(error)) return;
+
     const responseError = error?.response?.data?.error;
+
     if (
       parseInt(responseError.code || "") === 403 &&
       responseError.message === "can't access this api"

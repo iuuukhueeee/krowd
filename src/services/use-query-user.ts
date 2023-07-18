@@ -1,18 +1,22 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { userApi } from "@/api";
-import { signOutWithGoogle } from "@/features/auth/services/google";
 
 export const useQueryUser = () => {
-  const queryClient = useQueryClient();
-
   return useQuery({
     queryKey: ["user", "login"],
     queryFn: userApi.getUser,
     retry: false,
-    onError: () => {
-      queryClient.setQueryData(["user", "login"], null);
-      signOutWithGoogle();
-    },
   });
+};
+
+export const usePutUser = () => {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: userApi.putUser,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["user"] }),
+  });
+
+  return mutation;
 };

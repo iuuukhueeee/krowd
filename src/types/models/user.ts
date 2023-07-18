@@ -18,4 +18,5 @@ export interface UserModel {
   createdAt: Date;
   status: ApproveStatus;
   enabled: boolean;
+  fullName: string;
 }

@@ -1,21 +1,47 @@
 import { useState } from "react";
 import { Avatar, Center, Flex } from "@mantine/core";
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";
+import { UseFormReturnType } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
+import { IconCheck } from "@tabler/icons-react";
 
-export default function ImageDrop() {
+import useAsyncEffect from "@/hooks/useAsyncEffect";
+import { uploadImage } from "@/utils/cloudinary";
+
+interface ImageDropProps<T> {
+  form: UseFormReturnType<
+    T & {
+      avatar: string;
+    }
+  >;
+}
+
+export default function ImageDrop<T>({ form }: ImageDropProps<T>) {
   const [files, setFiles] = useState<FileWithPath[]>([]);
+  const [img, setImg] = useState(form.values.avatar);
 
-  const previews = files.map((file, index) => {
-    const imageUrl = URL.createObjectURL(file);
-    return (
-      <Avatar
-        key={index}
-        size={80}
-        src={imageUrl}
-        imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
-      />
-    );
-  });
+  useAsyncEffect(async () => {
+    if (files.length === 0) return;
+    try {
+      notifications.show({
+        id: "uploading",
+        loading: true,
+        message: "Processing your avatar",
+        autoClose: false,
+        withCloseButton: false,
+      });
+      const image = await (await uploadImage(files[0])).json();
+      setImg(image.url);
+      if (form) form.setFieldValue("avatar", image.url);
+    } finally {
+      notifications.update({
+        id: "uploading",
+        message: "Your avatar uploaded",
+        color: "green",
+        icon: <IconCheck size="1rem" />,
+      });
+    }
+  }, [files]);
 
   return (
     <div>
@@ -32,7 +58,9 @@ export default function ImageDrop() {
             Drop your avatar here
           </Center>
         </Dropzone>
-        {previews}
+        <Avatar size={80} src={img}>
+          IM
+        </Avatar>
       </Flex>
     </div>
   );

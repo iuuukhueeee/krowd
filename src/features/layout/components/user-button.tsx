@@ -62,8 +62,6 @@ export function UserButton({ image, name, email, icon, ...others }: UserButtonPr
         <Menu.Item onClick={signOutWithGoogle(navigate)} color="red" icon={<IconLogout />}>
           Logout
         </Menu.Item>
-
-        {/* Other items ... */}
       </Menu.Dropdown>
     </Menu>
   );
