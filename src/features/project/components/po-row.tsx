@@ -4,7 +4,6 @@ import {
   ActionIcon,
   Anchor,
   Avatar,
-  Box,
   Button,
   createStyles,
   Group,
@@ -16,19 +15,10 @@ import {
   Tooltip,
   UnstyledButton,
 } from "@mantine/core";
-import {
-  IconBan,
-  IconBookmark,
-  IconCalendar,
-  IconCheck,
-  IconChevronDown,
-  IconEdit,
-  IconTrash,
-} from "@tabler/icons-react";
+import { IconChevronDown, IconEdit, IconTrash } from "@tabler/icons-react";
 import { pascalCase } from "change-case";
 import dayjs from "dayjs";
 
-import useProject from "@/services/admin/use-project";
 import { ApproveStatus } from "@/types/enums/project-status";
 import { ProjectModel } from "@/types/models/project";
 import { getStatusColor } from "@/utils/color";
