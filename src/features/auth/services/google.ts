@@ -1,7 +1,7 @@
 import { NavigateFunction } from "react-router-dom";
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 
-import { queryClient } from "@/app";
+import { queryClient } from "@/App";
 import { auth } from "@/features/auth/services/firebase";
 
 export const provider = new GoogleAuthProvider();

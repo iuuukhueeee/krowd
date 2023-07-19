@@ -1,6 +1,7 @@
-import { TableReviewsProps } from "@/pages/admin/projects-page";
+// import { TableReviewsProps } from "@/pages/admin/projects-page";
+// import TableReviewsProps from "@/pages/admin/projects-page";
 
-export const data: TableReviewsProps["data"] = [
+export const data = [
   {
     title: "string",
     author: "string",
