@@ -24,7 +24,7 @@ export default function Login() {
     const responseError = error?.response?.data?.error;
 
     if (
-      parseInt(responseError.code || "") === 403 &&
+      parseInt((responseError && responseError.code) || "") === 403 &&
       responseError.message === "can't access this api"
     )
       return navigate("/sign-up");
